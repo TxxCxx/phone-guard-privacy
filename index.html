@@ -6,6 +6,31 @@
   <meta name="description" content="Privacy Policy for the Phone Guard Android application.">
   <link rel="canonical" href="https://txxcxx.github.io/phone-guard-privacy/">
   <title>Phone Guard Privacy Policy | 手机防盗守护隐私政策</title>
+  <script>
+    (() => {
+      const storageKey = "phone-guard-privacy-language";
+      const hashLanguage = window.location.hash === "#chinese"
+        ? "zh-CN"
+        : window.location.hash === "#english"
+          ? "en"
+          : null;
+      let savedLanguage = null;
+
+      try {
+        savedLanguage = window.localStorage.getItem(storageKey);
+      } catch (_) {
+        // Browser storage can be unavailable in privacy modes. Language switching still works.
+      }
+
+      const browserLanguage = (window.navigator.language || "en").toLowerCase();
+      const selectedLanguage = hashLanguage
+        || (savedLanguage === "zh-CN" || savedLanguage === "en" ? savedLanguage : null)
+        || (browserLanguage.startsWith("zh") ? "zh-CN" : "en");
+
+      document.documentElement.dataset.policyLang = selectedLanguage;
+      document.documentElement.lang = selectedLanguage;
+    })();
+  </script>
   <style>
     :root {
       color-scheme: light dark;
@@ -143,6 +168,21 @@
       text-decoration: none;
     }
 
+    .language-nav a[aria-current="true"] {
+      border-color: var(--accent);
+      background: var(--accent);
+      color: #ffffff;
+    }
+
+    html[data-policy-lang] .language-copy {
+      display: none;
+    }
+
+    html[data-policy-lang="en"] .language-copy[data-policy-language="en"],
+    html[data-policy-lang="zh-CN"] .language-copy[data-policy-language="zh-CN"] {
+      display: block;
+    }
+
     .notice {
       padding: 18px 20px;
       border-left: 4px solid var(--accent);
@@ -188,25 +228,40 @@
 <body>
   <main>
     <header>
-      <h1>Phone Guard Privacy Policy</h1>
-      <p class="summary">
-        Phone Guard is an on-device anti-theft utility. The current version processes
-        protection information locally and does not transmit app-processed data to the
-        developer or third-party servers.
-      </p>
-      <div class="metadata">
-        <div><strong>Application:</strong><br>Phone Guard / 手机防盗守护</div>
-        <div><strong>Package:</strong><br>com.phonemonitoring.guard</div>
-        <div><strong>Effective date:</strong><br>October 4, 2026</div>
-        <div><strong>Developer:</strong><br>TxxCxx</div>
+      <div class="language-copy" data-policy-language="en">
+        <h1>Phone Guard Privacy Policy</h1>
+        <p class="summary">
+          Phone Guard is an on-device anti-theft utility. The current version processes
+          protection information locally and does not transmit app-processed data to the
+          developer or third-party servers.
+        </p>
+        <div class="metadata">
+          <div><strong>Application:</strong><br>Phone Guard / 手机防盗守护</div>
+          <div><strong>Package:</strong><br>com.phonemonitoring.guard</div>
+          <div><strong>Effective date:</strong><br>October 5, 2026</div>
+          <div><strong>Developer:</strong><br>TxxCxx</div>
+        </div>
       </div>
-      <nav class="language-nav" aria-label="Language navigation">
-        <a href="#english">English</a>
-        <a href="#chinese" lang="zh-CN">中文</a>
+      <div class="language-copy" data-policy-language="zh-CN" lang="zh-CN">
+        <h1>手机防盗守护隐私政策</h1>
+        <p class="summary">
+          手机防盗守护是一款在设备本地运行的防盗辅助应用。当前版本在本机处理守护信息，
+          不会把应用处理的数据传输给开发者或第三方服务器。
+        </p>
+        <div class="metadata">
+          <div><strong>应用：</strong><br>手机防盗守护 / Phone Guard</div>
+          <div><strong>软件包：</strong><br>com.phonemonitoring.guard</div>
+          <div><strong>生效日期：</strong><br>2026 年 10 月 5 日</div>
+          <div><strong>开发者：</strong><br>TxxCxx</div>
+        </div>
+      </div>
+      <nav class="language-nav" aria-label="Language / 语言">
+        <a href="#english" data-policy-language-option="en">English</a>
+        <a href="#chinese" data-policy-language-option="zh-CN" lang="zh-CN">中文</a>
       </nav>
     </header>
 
-    <section id="english">
+    <section id="english" class="language-copy" data-policy-language="en">
       <h2>English</h2>
 
       <h3>1. Scope and summary</h3>
@@ -342,6 +397,11 @@
         The Phone Guard app itself does not send users to this page automatically and does not
         receive GitHub's website logs.
       </p>
+      <p>
+        This page uses browser local storage only to remember whether the visitor selected
+        English or Chinese. The preference remains in the visitor's browser and is not sent to
+        the developer.
+      </p>
 
       <h3>8. Children's privacy</h3>
       <p>
@@ -364,7 +424,7 @@
       </p>
     </section>
 
-    <section id="chinese" lang="zh-CN">
+    <section id="chinese" class="language-copy" data-policy-language="zh-CN" lang="zh-CN">
       <h2>中文</h2>
 
       <h3>1. 适用范围与摘要</h3>
@@ -463,6 +523,10 @@
         <a href="https://docs.github.com/zh/site-policy/privacy-policies/github-general-privacy-statement">GitHub 一般隐私声明</a>
         处理 IP 地址、访问日志等网页请求技术信息。手机防盗守护 App 不会自动把用户发送到本页面，也不会接收 GitHub 的网页访问日志。
       </p>
+      <p>
+        本页面仅使用浏览器本地存储来记住访问者选择了中文还是英文。该偏好只保留在访问者的浏览器中，
+        不会发送给开发者。
+      </p>
 
       <h3>8. 儿童隐私</h3>
       <p>本应用并非专门面向儿童设计，也不会有意要求用户提交个人资料。</p>
@@ -481,8 +545,57 @@
     </section>
 
     <footer>
-      Phone Guard Privacy Policy · Last updated October 4, 2026
+      <div class="language-copy" data-policy-language="en">
+        Phone Guard Privacy Policy · Last updated October 5, 2026
+      </div>
+      <div class="language-copy" data-policy-language="zh-CN" lang="zh-CN">
+        手机防盗守护隐私政策 · 最后更新于 2026 年 10 月 5 日
+      </div>
     </footer>
   </main>
+  <script>
+    (() => {
+      const storageKey = "phone-guard-privacy-language";
+      const root = document.documentElement;
+      const languageOptions = document.querySelectorAll("[data-policy-language-option]");
+
+      const applyLanguage = (language, persist) => {
+        const selectedLanguage = language === "zh-CN" ? "zh-CN" : "en";
+        root.dataset.policyLang = selectedLanguage;
+        root.lang = selectedLanguage;
+        document.title = selectedLanguage === "zh-CN"
+          ? "手机防盗守护隐私政策 | Phone Guard Privacy Policy"
+          : "Phone Guard Privacy Policy | 手机防盗守护隐私政策";
+
+        languageOptions.forEach((option) => {
+          if (option.dataset.policyLanguageOption === selectedLanguage) {
+            option.setAttribute("aria-current", "true");
+          } else {
+            option.removeAttribute("aria-current");
+          }
+        });
+
+        if (persist) {
+          try {
+            window.localStorage.setItem(storageKey, selectedLanguage);
+          } catch (_) {
+            // The selected language still applies for the current page view.
+          }
+        }
+      };
+
+      languageOptions.forEach((option) => {
+        option.addEventListener("click", (event) => {
+          event.preventDefault();
+          const selectedLanguage = option.dataset.policyLanguageOption;
+          applyLanguage(selectedLanguage, true);
+          window.history.replaceState(null, "", option.getAttribute("href"));
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+      });
+
+      applyLanguage(root.dataset.policyLang, false);
+    })();
+  </script>
 </body>
 </html>
